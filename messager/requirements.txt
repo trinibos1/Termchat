@@ -1,0 +1,6 @@
+supabase
+python-dotenv
+rich
+plyer
+flask
+flask-session
