@@ -1,137 +1,144 @@
-# TermChat CLI Application
 
-TermChat is a command-line interface (CLI) application that allows users to communicate with each other through a messaging service. It features user authentication, contact management, and real-time messaging with system notifications.
+
+```markdown
+# TermChat CLI
+
+**TermChat** is a command-line messaging application that lets users communicate in real time.  
+It includes secure authentication, contact management, direct messaging, message history, and desktop notifications for new messages (via `plyer`).
+
+> ⚠️ **Beta version** — expect some rough edges.
 
 ## Features
 
-*   **User Authentication**: Sign up and log in securely.
-*   **Contact Management**: Add and manage contacts by email.
-*   **Send Messages**: Send direct messages to your contacts.
-*   **View Messages**: See your message history.
-*   **Update Username**: Change your display username.
-*   **System Notifications**: Receive desktop notifications for new messages (requires `plyer`).
----
-Please note this is still in beta
----
-## Setup Instructions
+- User authentication (sign up & login)
+- Add and manage contacts by email
+- Send direct messages to contacts
+- View incoming and outgoing message history
+- Change your display username
+- Desktop notifications for new messages
 
-### Prerequisites
+## Requirements
 
-*   Python 3.x
-*   pip (Python package installer)
+- Python 3.8+
+- pip
 
-### 1. Install Dependencies
+## Installation
 
-Navigate to the `messager` directory and install the required Python packages:
+1. Clone the repository (or extract the project folder)
 
-```bash
-cd messager
-pip install -r requirements.txt
+2. Navigate to the project root and install dependencies:
+
+   ```bash
+   cd messager
+   pip install -r requirements.txt
+   ```
+
+## Configuration
+
+You need to create **two** `.env` files with your Supabase credentials.
+
+### 1. Shared config (client + backend)  
+Create file: `messager/message/.env`
+
+```env
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_KEY=your-anon-or-service-key
 ```
 
-### 2. Set Up Environment Variables
+### 2. Backend-only config  
+Create file: `messager/api.env`
 
-You need to configure your Supabase credentials and a Flask secret key.
+```env
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_KEY=your-anon-or-service-key
+SECRET_KEY=change-this-to-a-very-long-random-string-2025
+```
 
-*   **`messager/message/.env`**: Create this file with your Supabase URL and Key.
-    ```
-        SUPABASE_URL='YOUR_SUPABASE_URL'
-            SUPABASE_KEY='YOUR_SUPABASE_ANON_KEY'
-                ```
-                *   **`messager/api.env`**: Create this file with your Supabase URL and Key, and a Flask `SECRET_KEY`.
-                    ```
-                        SUPABASE_URL='YOUR_SUPABASE_URL'
-                            SUPABASE_KEY='YOUR_SUPABASE_ANON_KEY'
-                                SECRET_KEY='A_VERY_STRONG_SECRET_KEY_FOR_FLASK_SESSIONS'
-                                    ```
-                                        Replace `'YOUR_SUPABASE_URL'`, `'YOUR_SUPABASE_ANON_KEY'`, and `'A_VERY_STRONG_SECRET_KEY_FOR_FLASK_SESSIONS'` with your actual Supabase project URL, anonymous key, and a strong, unique secret key for Flask sessions, respectively.
+> **Important**: Use a strong, unique value for `SECRET_KEY` (at least 32–50 random characters).  
+> You can generate one easily with: `python -c "import secrets; print(secrets.token_urlsafe(48))"`
 
-                                        ## Running the Backend Server
+## Starting the Application
 
-                                        The backend server handles communication with Supabase and manages user sessions.
+TermChat uses a simple backend server + interactive CLI client.
 
-                                        1.  Open a new terminal.
-                                        2.  Navigate to the `messager/message/` directory:
-                                            ```bash
-                                                cd messager/message/
-                                                    ```
-                                                    3.  Run the backend server:
-                                                        ```bash
-                                                            python backend.py
-                                                                ```
-                                                                    Leave this terminal running as long as you want to use the TermChat CLI client.
+### Step 1 – Start the backend server
 
-                                                                    ## Running the CLI Client
+Open **terminal 1**:
 
-                                                                    The CLI client allows you to interact with the messaging service.
+```bash
+cd messager/message
+python backend.py
+```
 
-                                                                    1.  Open another new terminal.
-                                                                    2.  Navigate to the `messager/message/` directory:
-                                                                        ```bash
-                                                                            cd messager/message/
-                                                                                ```
-                                                                                3.  Run the CLI client:
-                                                                                    ```bash
-                                                                                        python termchat.py
-                                                                                            ```
+Keep this terminal running.
 
-                                                                                            ### Basic Usage
+### Step 2 – Run the CLI client
 
-                                                                                            Once the client is running, you can use the following commands:
+Open **terminal 2**:
 
-                                                                                            *   `signup`: Create a new user account.
-                                                                                                *   You will be prompted for an email, password, and username.
-                                                                                                *   `login`: Log in to an existing account.
-                                                                                                    *   You will be prompted for your email and password.
-                                                                                                    *   `add_contact`: Add a new contact by their email address.
-                                                                                                    *   `send`: Send a message to one of your contacts.
-                                                                                                        *   You will see a list of your contacts and choose one by number, then enter your message.
-                                                                                                        *   `show`: Display your incoming and outgoing messages.
-                                                                                                        *   `set_username`: Update your username.
-                                                                                                        *   `help`: Show the list of available commands.
-                                                                                                        *   `quit`: Exit the application.
+```bash
+cd messager/message
+python termchat.py
+```
 
-                                                                                                        ## Running the Demo Script
+You should now see the interactive prompt and can start using commands.
 
-                                                                                                        A demo script is provided to showcase the application's functionality by simulating two users signing up, adding each other as contacts, and exchanging messages.
+## CLI Commands
 
-                                                                                                        1.  Ensure the backend server is running as described above.
-                                                                                                        2.  Open a new terminal.
-                                                                                                        3.  Navigate to the `messager/` directory:
-                                                                                                            ```bash
-                                                                                                                cd messager/
-                                                                                                                    ```
-                                                                                                                    4.  Run the demo script:
-                                                                                                                        ```bash
-                                                                                                                            python demo.py
-                                                                                                                                ```
+Once logged in, use these commands:
 
-                                                                                                                                The demo script will:
-                                                                                                                                *   Install dependencies (if not already installed).
-                                                                                                                                *   Guide you through setting up environment variables (though you should have done this already).
-                                                                                                                                *   Prompt you to start the backend server.
-                                                                                                                                *   Automatically sign up two users (`user1@example.com` and `user2@example.com`).
-                                                                                                                                *   Have `user1` log in, add `user2` as a contact, and send a message.
-                                                                                                                                *   Have `user2` log in, view messages, and send a reply to `user1`.
+| Command       | Description                                      |
+|---------------|--------------------------------------------------|
+| `signup`      | Create a new account                             |
+| `login`       | Log in with email + password                     |
+| `add_contact` | Add a contact by their email address             |
+| `send`        | Send a message (select contact by number)        |
+| `show`        | Display all your messages                        |
+| `set_username`| Change your display name                         |
+| `help`        | Show this list of commands                       |
+| `quit` / `exit` | Close the application                          |
 
-                                                                                                                                Expected output will include terminal interactions for both users, showing signup success, login messages, contact additions, and message exchanges. You will see `CLIENT STDOUT` and `CLIENT STDERR` prefixes for the output of the simulated client interactions.
+## Quick Demo (Two Simulated Users)
 
-                                                                                                                                ## Contributing
+Watch two test users sign up, add each other, and chat:
 
-                                                                                                                                Feel free to fork the repository, open issues, and submit pull requests.
+1. Make sure the **backend server** is already running
 
-                                                                                                                                ## License
+2. In a new terminal:
 
-                                                                                                                                This project is open-source and available under the MIT License.
+   ```bash
+   cd messager
+   python demo.py
+   ```
 
-                                                                                                                                ## Project Information
+The script will:
+- Verify/install dependencies if needed
+- Remind you about `.env` files
+- Create two test accounts (`user1@example.com`, `user2@example.com`)
+- Log them in, add contacts, and exchange a few messages
 
-                                                                                                                                This project was developed as a school assignment.
+Output is prefixed with `CLIENT STDOUT` / `CLIENT STDERR` for clarity.
 
-                                                                                                                                ### Changes Made:
-                                                                                                                                * Implemented local contact storage.
-                                                                                                                                * Fixed the "Could not add contact" error.
-                                                                                                                                * Fixed the "Could not send message" error.
-                                                                                                                                * Handled Supabase APIError exceptions in `get_messages`.
-                                                                                                                                * Replaced deprecated `res.json()` with `res.model_dump_json()`.
-                                                                                                                                
+## Project Status & Recent Fixes
+
+- Implemented local contact storage
+- Fixed "Could not add contact" error
+- Fixed "Could not send message" error
+- Improved Supabase API error handling in `get_messages`
+- Replaced deprecated `res.json()` with `res.model_dump_json()`
+
+## Contributing
+
+Feel free to open issues, suggest improvements, or submit pull requests.
+
+## License
+
+MIT License
+
+## Notes
+
+This project was originally developed as a school assignment.
+
+Happy chatting! 🗨️
+```
+
